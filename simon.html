@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background: #1e1e2f;
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
+  color: #ffe6f0;
+}
+h1 { 
+margin-top: 20px; 
+}
+.box {
+  width: 100px; height: 100px; margin: 10px;
+  display: inline-block; border-radius: 15px;
+  box-shadow: 0 0 10px #0005;
+  cursor: pointer; transition: 0.2s;
+}
+.pink { background: #ff7ca8; }
+.yellow { background: #ffd56b; }
+.mint { background: #78f0c4; }
+.lav { background: #b28dff; }
+.flash { filter: brightness(1.5); }
+</style>
+</head>
+<body>
+
+<h1>Simon Game</h1>
+<div id="game">
+  <div class="box pink" id="p"></div>
+  <div class="box yellow" id="y"></div><br>
+  <div class="box mint" id="m"></div>
+  <div class="box lav" id="l"></div>
+</div>
+
+<script>
+let seq =[], playSeq =[],colors = ["p","y","m","l"];
+
+function blink(c) {
+  let el = document.getElementById(c);
+  el.classList.add("flash");
+  setTimeout(()=>el.classList.remove("flash"), 300);
+}
+
+function step() {
+  playSeq = [];
+  seq.push(colors[Math.floor(Math.random()*4)]);
+  let i = 0;
+  let show = setInterval(()=>{
+    blink(seq[i]);
+    i++;
+    if(i >= seq.length)clearInterval(show);
+  }, 600);
+}
+function press(c) {
+  playSeq.push(c);
+  blink(c);
+  if (playSeq.join("") !== seq.slice(0, playSeq.length).join("")) {
+    alert(" Oops! Game over.");
+    seq = [];
+    step();
+  } else if (playSeq.length === seq.length) {
+    setTimeout(step, 700);
+  }
+}
+colors.forEach(c => {
+  document.getElementById(c).onclick = ()=>press(c);
+});
+
+step();
+</script>
+
+</body>
+</html>
+
